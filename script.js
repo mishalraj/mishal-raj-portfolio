@@ -324,19 +324,40 @@ const spyNav = () => {
     .map((link) => document.querySelector(link.getAttribute("href")))
     .filter(Boolean);
 
-  const sync = () => {
-    const y = window.scrollY + 120;
-    let current = sections[0];
-    sections.forEach((section) => {
-      if (section.offsetTop <= y) current = section;
-    });
+  const setCurrent = (id) => {
     links.forEach((link) => {
-      const on = link.getAttribute("href") === `#${current.id}`;
-      link.toggleAttribute("aria-current", on);
-      if (on) link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
+      if (link.getAttribute("href") === `#${id}`) {
+        link.setAttribute("aria-current", "true");
+      } else {
+        link.removeAttribute("aria-current");
+      }
     });
   };
+
+  const sync = () => {
+    if (!sections.length) return;
+    const doc = document.documentElement;
+    const atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 32;
+    if (atBottom) {
+      setCurrent(sections[sections.length - 1].id);
+      return;
+    }
+
+    const probe = window.scrollY + 160;
+    let current = sections[0];
+    sections.forEach((section) => {
+      const top = section.getBoundingClientRect().top + window.scrollY;
+      if (top <= probe) current = section;
+    });
+    setCurrent(current.id);
+  };
+
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      const id = link.getAttribute("href")?.slice(1);
+      if (id) setCurrent(id);
+    });
+  });
 
   sync();
   window.addEventListener("scroll", sync, { passive: true });
