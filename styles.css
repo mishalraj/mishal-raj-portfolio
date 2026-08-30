@@ -153,6 +153,16 @@ a:hover {
   letter-spacing: -0.02em;
 }
 
+.rail-photo {
+  width: 4.4rem;
+  height: 4.4rem;
+  object-fit: cover;
+  object-position: center 10%;
+  border: 1px solid var(--line);
+  margin: 0.15rem 0 0.55rem;
+  filter: saturate(0.88) contrast(1.05);
+}
+
 .rail-role,
 .rail-org,
 .rail-tag {
@@ -216,7 +226,51 @@ a:hover {
 
 main {
   padding: 2.25rem 2.5rem 4rem;
-  max-width: 52rem;
+  max-width: 56rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15.25rem;
+  gap: 1.6rem 1.75rem;
+  align-items: start;
+}
+
+.hero-copy .lede,
+.hero-copy .headline {
+  max-width: 36rem;
+}
+
+.portrait {
+  margin: 0.15rem 0 0;
+  border: 1px solid var(--line);
+  background: #080706;
+}
+
+.portrait-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.4rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-2);
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: saturate(0.9) contrast(1.04);
+}
+
+.portrait figcaption {
+  margin: 0;
+  padding: 0.45rem 0.7rem 0.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.7rem;
 }
 
 .hero h1 {
@@ -748,6 +802,14 @@ main {
 
   main {
     padding: 1.5rem 1.15rem 3.5rem;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait {
+    max-width: 16.5rem;
   }
 
   .metrics {
