@@ -48,10 +48,14 @@
       }
     </script>
   </head>
-  <body>
+  <body class="is-booting">
     <a class="skip" href="#main">Skip to content</a>
 
     <div class="grain" aria-hidden="true"></div>
+
+    <div id="boot" class="boot" role="status">
+      <div class="boot-log mono" id="boot-log"></div>
+    </div>
 
     <header class="topbar">
       <div class="topbar-left">
@@ -91,7 +95,7 @@
 
       <main id="main">
         <section class="hero" aria-label="Introduction">
-          <div class="hero-copy">
+          <div class="hero-copy reveal">
             <p class="mono kicker">
               <span class="prompt">$</span> cat README.md
             </p>
@@ -116,45 +120,48 @@
               <a class="btn ghost" href="https://topmate.io/mishal_raj10" rel="noopener noreferrer" target="_blank">topmate</a>
             </div>
           </div>
-          <figure class="portrait">
+          <figure class="portrait reveal">
             <div class="portrait-bar">
               <span class="term-dots" aria-hidden="true"></span>
               <span class="mono dim">~/mishal.jpg</span>
             </div>
-            <img
-              src="mishal.jpg"
-              alt="Mishal Raj by the coast, leaning against a car"
-              width="768"
-              height="1024"
-            />
+            <div class="portrait-frame">
+              <img
+                src="mishal.jpg"
+                alt="Mishal Raj by the coast, leaning against a car"
+                width="768"
+                height="1024"
+              />
+              <span class="scan" aria-hidden="true"></span>
+            </div>
             <figcaption class="mono dim">off-call · not a production incident</figcaption>
           </figure>
         </section>
 
         <section class="metrics" aria-label="Selected numbers">
-          <article>
+          <article class="reveal">
             <p class="metric-value" data-count="7" data-suffix="+">7+</p>
             <p class="metric-label">years in prod</p>
             <p class="metric-note">still in staging emotionally</p>
           </article>
-          <article>
+          <article class="reveal">
             <p class="metric-value" data-count="700000" data-suffix="">700k</p>
             <p class="metric-label">devices on MQTT</p>
             <p class="metric-note">after we retired FCM</p>
           </article>
-          <article>
+          <article class="reveal">
             <p class="metric-value">millions</p>
             <p class="metric-label">hotel searches / day</p>
             <p class="metric-note">ixigo, native rewrite</p>
           </article>
-          <article>
+          <article class="reveal">
             <p class="metric-value">S5</p>
             <p class="metric-label">Shark Tank India</p>
             <p class="metric-note">Pukaar.ai, the fun one</p>
           </article>
         </section>
 
-        <section id="about" class="block">
+        <section id="about" class="block reveal">
           <header class="block-head">
             <h2><span class="num">01</span> whoami</h2>
             <p class="mono dim">senior backend, solution-shaped, allergic to theatre</p>
@@ -165,21 +172,21 @@
               <span class="term-dots" aria-hidden="true"></span>
               <span class="mono dim">mishal@ixigo — zsh — 80×24</span>
             </div>
-            <div class="term-body">
-              <p><span class="prompt">$</span> whoami</p>
+            <div class="term-body" id="term-play">
+              <p class="cmd"><span class="prompt">$</span> <span class="typed" data-text="whoami">whoami</span></p>
               <p class="out">
                 Software engineer. Close to 7 years building and scaling real products.
                 I like owning the path from idea to production, especially when the
                 failure mode is “merchant does not get paid” or “traveller cannot find a bed.”
               </p>
-              <p><span class="prompt">$</span> uptime</p>
+              <p class="cmd"><span class="prompt">$</span> <span class="typed" data-text="uptime">uptime</span></p>
               <p class="out">
                 Principal Engineer at ixigo, driving the Hotels Search Platform off MWeb
                 onto Android and iOS, with search and booking services behind it.
                 Designing for low latency, high availability, and the kind of traffic
                 that does not care about your feelings.
               </p>
-              <p><span class="prompt">$</span> grep -i “actually proud”</p>
+              <p class="cmd"><span class="prompt">$</span> <span class="typed" data-text='grep -i “actually proud”'>grep -i “actually proud”</span></p>
               <p class="out">
                 Large-scale payment and consumer systems at Razorpay and Grab.
                 Zero-downtime migrations. Event-driven services. Mentoring people who
@@ -188,12 +195,12 @@
                 baby cry insights — which appeared on Shark Tank India Season 5.
                 My mother understood my job for approximately forty minutes.
               </p>
-              <p><span class="prompt">$</span> <span class="blink-line">_</span></p>
+              <p class="cmd caret-line"><span class="prompt">$</span> <span class="blink-line">_</span></p>
             </div>
           </div>
         </section>
 
-        <section id="work" class="block">
+        <section id="work" class="block reveal">
           <header class="block-head">
             <h2><span class="num">02</span> journalctl -u career</h2>
             <p class="mono dim">newest first · expand a unit for the postmortem</p>
@@ -390,7 +397,7 @@
           </ol>
         </section>
 
-        <section id="stack" class="block">
+        <section id="stack" class="block reveal">
           <header class="block-head">
             <h2><span class="num">03</span> ls ./runtime</h2>
             <p class="mono dim">not a personality · just the tools that survived production</p>
@@ -449,7 +456,7 @@
           </div>
         </section>
 
-        <section id="contact" class="block">
+        <section id="contact" class="block reveal">
           <header class="block-head">
             <h2><span class="num">04</span> write mishal</h2>
             <p class="mono dim">SMTP still works · so does a calendar</p>

@@ -177,3 +177,185 @@ document.addEventListener("keydown", (e) => {
     go(buttons[active].dataset.href);
   }
 });
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const typeText = async (el, text, speed = 22) => {
+  el.textContent = "";
+  for (const ch of text) {
+    el.textContent += ch;
+    await sleep(speed);
+  }
+};
+
+const playBoot = async () => {
+  const boot = document.getElementById("boot");
+  const log = document.getElementById("boot-log");
+  const finish = () => {
+    document.body.classList.remove("is-booting");
+    document.body.classList.add("is-ready");
+    boot?.classList.add("is-done");
+    setTimeout(() => boot?.remove(), 500);
+  };
+
+  if (!boot || !log || reduceMotion) {
+    finish();
+    return;
+  }
+
+  try {
+
+  const lines = [
+    ["$ systemctl start mishalraj", ""],
+    ["[  OK  ] pretence.service", "dim-line"],
+    ["[  OK  ] payments.target", "dim-line"],
+    ["[  OK  ] hotel-search.service", "dim-line"],
+    ["ready.", ""],
+  ];
+
+  for (const [text, cls] of lines) {
+    const p = document.createElement("p");
+    if (cls) p.className = cls;
+    log.appendChild(p);
+    await typeText(p, text, 14);
+    await sleep(70);
+  }
+    await sleep(240);
+  } finally {
+    finish();
+  }
+};
+
+const reveal = () => {
+  const nodes = [...document.querySelectorAll(".reveal")];
+  const show = (el) => el.classList.add("is-in");
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    nodes.forEach(show);
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          show(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: "0px 0px -4% 0px" }
+  );
+  nodes.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) show(el);
+    else io.observe(el);
+  });
+  setTimeout(() => {
+    nodes.forEach((el) => {
+      if (!el.classList.contains("is-in")) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) show(el);
+      }
+    });
+  }, 700);
+};
+
+let termStarted = false;
+const playTerm = async () => {
+  const root = document.getElementById("term-play");
+  if (!root || termStarted) return;
+  termStarted = true;
+  const typed = [...root.querySelectorAll(".typed")];
+  const outs = [...root.querySelectorAll(".out")];
+  const caret = root.querySelector(".caret-line");
+
+  const showAll = () => {
+    typed.forEach((el) => {
+      el.textContent = el.dataset.text || "";
+    });
+    outs.forEach((el) => el.classList.add("is-shown"));
+    caret?.classList.add("is-shown");
+    root.classList.add("is-played");
+  };
+
+  if (reduceMotion) {
+    showAll();
+    return;
+  }
+
+  for (let i = 0; i < typed.length; i += 1) {
+    typed[i].textContent = "";
+    await typeText(typed[i], typed[i].dataset.text || "", 26);
+    await sleep(120);
+    outs[i]?.classList.add("is-shown");
+    await sleep(280);
+  }
+  caret?.classList.add("is-shown");
+  root.classList.add("is-played");
+};
+
+const watchTerm = () => {
+  const root = document.getElementById("term-play");
+  if (!root) return;
+  if (reduceMotion) {
+    playTerm();
+    return;
+  }
+  root.querySelectorAll(".typed").forEach((el) => {
+    el.textContent = "";
+  });
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          playTerm();
+          io.disconnect();
+        }
+      });
+    },
+    { threshold: 0.35 }
+  );
+  io.observe(root);
+};
+
+const spyNav = () => {
+  const links = [...document.querySelectorAll(".nav a[href^='#']")];
+  const sections = links
+    .map((link) => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const sync = () => {
+    const y = window.scrollY + 120;
+    let current = sections[0];
+    sections.forEach((section) => {
+      if (section.offsetTop <= y) current = section;
+    });
+    links.forEach((link) => {
+      const on = link.getAttribute("href") === `#${current.id}`;
+      link.toggleAttribute("aria-current", on);
+      if (on) link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
+    });
+  };
+
+  sync();
+  window.addEventListener("scroll", sync, { passive: true });
+};
+
+const glitchTitle = () => {
+  const title = document.querySelector(".hero h1");
+  if (!title || reduceMotion) return;
+  const kick = () => {
+    title.classList.add("is-glitch");
+    setTimeout(() => title.classList.remove("is-glitch"), 400);
+  };
+  setTimeout(kick, 900);
+  setInterval(kick, 9000);
+};
+
+playBoot().then(() => {
+  reveal();
+  watchTerm();
+  spyNav();
+  glitchTitle();
+});
