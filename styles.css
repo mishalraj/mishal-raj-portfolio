@@ -153,16 +153,6 @@ a:hover {
   letter-spacing: -0.02em;
 }
 
-.rail-photo {
-  width: 4.4rem;
-  height: 4.4rem;
-  object-fit: cover;
-  object-position: center 10%;
-  border: 1px solid var(--line);
-  margin: 0.15rem 0 0.55rem;
-  filter: saturate(0.88) contrast(1.05);
-}
-
 .rail-role,
 .rail-org,
 .rail-tag {
